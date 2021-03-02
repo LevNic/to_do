@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+### Django ###
+*.log
+*.pot
+*.pyc
+local_settings.py
+
+venv
+
+
+# Text backup files
+*.bak
+
+#Database
+*.sqlite3
+
+#Pycharm
+.idea
+
+
