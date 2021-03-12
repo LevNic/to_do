@@ -12,3 +12,6 @@ class User(models.Model):
     last_name = models.CharField(max_length=64)
     age = models.PositiveIntegerField()
     mail = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.username
