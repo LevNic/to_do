@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
 from .models import ToDo, Project
-from .serializer import ProjectModelSerializer, ToDoModelSerializer
+from .serializer import ProjectModelSerializer, ToDoModelSerializer, ProjectModelSerializerBase
 
 
 class ProjectModelViewSet(ModelViewSet):
@@ -11,21 +11,13 @@ class ProjectModelViewSet(ModelViewSet):
     serializer_class = ProjectModelSerializer
     filterset_fields = ['name', 'users']
 
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return ProjectModelSerializer
+        return ProjectModelSerializerBase
+
 
 class ToDoModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = ToDo.objects.all()
     serializer_class = ToDoModelSerializer
-
-
-# class ToDoViewSet(ViewSet):
-#
-#     def list(self, request):
-#         to_do = ToDo.objects.all()
-#         serializer = ToDoModelSerializer(to_do, many=True)
-#         return Response(serializer.data)
-#
-#     def retrieve(self, request, pk=None):
-#         to_do = get_object_or_404(ToDo, pk=pk)
-#         serializer = ToDoModelSerializer(to_do)
-#         return Response(serializer.data)

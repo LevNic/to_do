@@ -13,6 +13,12 @@ class ProjectModelSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class ProjectModelSerializerBase(ModelSerializer):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+
 class ToDoModelSerializer(ModelSerializer):
     class Meta:
         model = ToDo
