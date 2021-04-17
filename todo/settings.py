@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_yasg',
+    "django.contrib.staticfiles",
+    "graphene_django",
     # my
     'users',
     'todo_app',
@@ -149,5 +151,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
 }
+
+GRAPHENE = {
+    "SCHEMA": "library.schema.schema"
+}
+
 
 

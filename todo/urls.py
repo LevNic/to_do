@@ -21,6 +21,7 @@ from users.views import UserModelViewSet
 from todo_app.views import ProjectModelViewSet, ToDoModelViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from graphene_django.views import GraphQLView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -46,6 +47,6 @@ urlpatterns = [
     re_path(r'^api/(?P<version>\d\.\d)/users/$', UserModelViewSet.as_view()),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
-
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path("graphql/", GraphQLView.as_view(graphiql=True)),
 ]
