@@ -9,6 +9,7 @@ import LoginForm from "./components/Auth";
 import axios from "axios";
 import {Link, Route, Switch, Redirect, BrowserRouter} from "react-router-dom";
 import Cookies from 'universal-cookie';
+import TodoForm from "./components/TodoForm";
 
 const NotFound404 = ({location}) => {
     return (
@@ -85,6 +86,25 @@ class App extends React.Component {
             })
     }
 
+    deleteTodo(id) {
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/api/todos/${id}`, {headers}).then(response => {
+              this.setState({todos: this.state.todos.filter((item)=>item.id !== id)})
+            }).catch(error => console.log(error))
+    }
+
+    createTodo(name, author) {
+        const headers = this.get_headers()
+        const data = {project: name, author: author}
+        axios.post(`http://127.0.0.1:8000/api/todos/`, data, {headers}).then(response => {
+              let new_todo = response.data
+              const author = this.state.users.filter((item) => item.id === new_todo.author)[0]
+              new_todo.author = author
+              this.setState({todos: [...this.state.todos, new_todo]})
+        }).catch(error => console.log(error))
+    }
+
+
 
     componentDidMount() {
         this.get_token_from_storage()
@@ -112,7 +132,8 @@ class App extends React.Component {
                     </nav>
                     <Switch>
                         <Route exact path='/' component={() => <UserList users={this.state.users}/>}/>
-                        <Route exact path='/todos' component={() => <TodoList items={this.state.todos}/>}/>
+                        <Route exact path='/todos/create' component={() => <TodoForm authors={this.state.authors} createTodo={(name, author) => this.createTodo(name, author)} />}  />
+                        <Route exact path='/todos' component={() => <TodoList items={this.state.todos} deleteTodo={(id)=>this.deleteTodo(id)} />} />
                         <Route exact path='/login' component={() => <LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
                         <Route path='/user/:id'> <UserTodoList items={this.state.todos}/> </Route>
                         <Redirect from='/users' to='/'/>
